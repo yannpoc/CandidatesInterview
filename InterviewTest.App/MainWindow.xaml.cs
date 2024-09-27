@@ -26,6 +26,14 @@ namespace InterviewTest.App
             _productStore.ProductRemoved += ProductStore_ProductRemoved;
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (var productType in _productStore.GetProductTypes())
+            {
+                _type.Items.Add(productType);
+            }
+        }
+
         private async void AddButton_Click(object sender, RoutedEventArgs e)
         {
             var name = _name.Text;

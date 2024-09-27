@@ -7,6 +7,8 @@ namespace InterviewTest.App
     {
         IEnumerable<IProduct> GetProducts();
 
+        IEnumerable<string> GetProductTypes();
+
         void AddProduct(IProduct product);
 
         void RemoveProduct(Guid productId);

@@ -9,20 +9,28 @@ namespace InterviewTest.App
     {
         private readonly object _instanceLock = new();
         private readonly List<IProduct> _products = [];
+        private readonly List<string> _productTypes = [];
 
         public IEnumerable<IProduct> GetProducts()
         {
             return _products.ToList();
         }
 
+        public IEnumerable<string> GetProductTypes()
+        {
+            return _productTypes;
+        }
+
         public ProductStore()
         {
             //NOTE: NO NEED TO CHANGE THIS;
-            _products.AddRange(new IProduct[]
-            {
+            _products.AddRange(
+            [
                 new Fruit("Orange", 5,3),
                 new Vegetable("Salad", 3,6)
-            });
+            ]);
+
+            _productTypes = ["Fruit", "Vegetable", /*"Bread"*/];
         }
 
         public void AddProduct(IProduct product)

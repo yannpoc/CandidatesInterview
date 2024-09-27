@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InterviewTest.App"
         mc:Ignorable="d"
-        Title="Food Inc - List sharing" Height="350" Width="525" Icon="1499284707_fruit_grapes.png">
+        Title="Food Inc - List sharing" Height="350" Width="525" Icon="1499284707_fruit_grapes.png" Loaded="Window_Loaded">
     <Window.Resources>
         <local:HealthIndexColorConverter x:Key="HealthIndexColorConverter" />
     </Window.Resources>
@@ -64,8 +64,6 @@
             <Label Content="Type" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Top" />
             <ComboBox x:Name="_type" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top"
                       Width="120">
-                <ListBoxItem Content="Fruit" />
-                <ListBoxItem Content="Vegetable" />
             </ComboBox>
             <Label Content="Name" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" VerticalAlignment="Top" />
             <TextBox x:Name="_name" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="0,13,0,0"
