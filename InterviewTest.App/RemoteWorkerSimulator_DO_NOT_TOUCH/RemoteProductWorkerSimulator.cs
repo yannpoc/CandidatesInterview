@@ -52,13 +52,13 @@ namespace InterviewTest.App.RemoteWorkerSimulator_DO_NOT_TOUCH
 			while (!_token.IsCancellationRequested)
 			{
 				Thread.Sleep(DELAY_BETWEEN_TASKS);
-				_productStore.ap(new Fruit(_fruitsName[_random.Next(_fruitsName.Length)], _random.Next(10),_random.Next(5)));
+				_productStore.AddProduct(new Fruit(_fruitsName[_random.Next(_fruitsName.Length)], _random.Next(10),_random.Next(5)));
 				Thread.Sleep(DELAY_BETWEEN_TASKS);
 				IEnumerable<IProduct> products = _productStore.GetProducts().ToList();
 				if (products.Any())
 				{
 					IProduct product = products.Skip(_random.Next(0, products.Count() - 1)).First();
-					_productStore.rp(product.Id);
+					_productStore.RemoveProduct(product.Id);
 				}
 			}
 		}

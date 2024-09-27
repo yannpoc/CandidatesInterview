@@ -7,7 +7,7 @@ namespace InterviewTest.App
 {
     public class ProductStore : IProductStore
     {
-        private readonly List<IProduct> _products = new List<IProduct>();
+        private readonly List<IProduct> _products = [];
 
         public IEnumerable<IProduct> GetProducts()
         {
@@ -24,14 +24,14 @@ namespace InterviewTest.App
             });
         }
 
-        public void ap(IProduct product)
+        public void AddProduct(IProduct product)
         {
             Thread.Sleep(5000);//DO NOT REMOVE; TO SIMULATE A BUGGY/SLOW SERVICE
             _products.Add(product);
             ProductAdded?.Invoke(product);
         }
 
-        public void rp(Guid productId)
+        public void RemoveProduct(Guid productId)
         {
             Thread.Sleep(5000);//DO NOT REMOVE; TO SIMULATE A BUGGY/SLOW SERVICE
             IProduct product = _products.FirstOrDefault(p => p.Id.Equals(productId));
