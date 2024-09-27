@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -88,24 +87,24 @@ namespace InterviewTest.App
             RefreshProducts();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            List<ProductAvailabilityChecker> checkers = new List<ProductAvailabilityChecker>();
-            List<Thread> t = new List<Thread>();
-            foreach (IProduct p in _products)
+            var checkers = new List<ProductAvailabilityChecker>();
+            var tasks = new List<Task>();
+
+            // Make a copy of the product now. Shallow copy ok because member of product are value types.
+            var products_ = _products.ToList();
+            foreach (IProduct p in products_)
             {
-                ProductAvailabilityChecker productAvailabilityChecker = new ProductAvailabilityChecker(p);
+                var productAvailabilityChecker = new ProductAvailabilityChecker(p);
                 checkers.Add(productAvailabilityChecker);
-                Thread thread = new Thread(productAvailabilityChecker.CheckIfAvailable);
-                t.Add(thread);
-                thread.Start();
-            }
-            foreach (Thread thread in t)
-            {
-                thread.Join();
+
+                tasks.Add(Task.Run(productAvailabilityChecker.CheckIfAvailable));
             }
 
-            StringBuilder sb = new StringBuilder();
+            await Task.WhenAll(tasks);
+
+            var sb = new StringBuilder();
             bool anyError = false;
             foreach (ProductAvailabilityChecker checker in checkers)
             {
@@ -115,6 +114,7 @@ namespace InterviewTest.App
                     sb.AppendLine("The product " + checker.Product.Name + " is not available");
                 }
             }
+
             if (!anyError)
             {
                 MessageBox.Show(this, "Everything is available.");
