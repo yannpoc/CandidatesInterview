@@ -23,33 +23,33 @@ namespace InterviewTest.App
             _productStore = ServiceProvider.Instance.ProductStore;
             _products.AddRange(_productStore.GetProducts());
             RefreshProducts();
-            _productStore.ProductAdded += _productStore_ProductAdded;
+            _productStore.ProductAdded += ProductStore_ProductAdded;
             _productStore.ProductRemoved += _productStore_ProductRemoved;
         }
 
-        private void _unitprice_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void Unitprice_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex(@"^\d+$");
+            var regex = new Regex(@"^\d+$");
             e.Handled = !regex.IsMatch(e.Text);
         }
 
-        private async void button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            String name = _name.Text;
-            int up;
-            int qty;
+            var name = _name.Text;
+            int unitPrice;
+            int quantity;
             IProduct p;
-            if (!String.IsNullOrEmpty(_type.Text) && int.TryParse(_unitprice.Text, out up) && int.TryParse(_quantity.Text, out qty))
+            if (!String.IsNullOrEmpty(_type.Text) && int.TryParse(_unitprice.Text, out unitPrice) && int.TryParse(_quantity.Text, out quantity))
             {
                 if (_type.Text == "Vegetable")
                 {
-                    p = new Vegetable(name, qty, up);
+                    p = new Vegetable(name, quantity, unitPrice);
                 }
                 else
                 {
-                    p = new Fruit(name, qty, up);
+                    p = new Fruit(name, quantity, unitPrice);
                 }
-                await Task.Run(() => _productStore.ap(p));
+                await Task.Run(() => _productStore.AddProduct(p));
             }
         }
 
@@ -81,7 +81,7 @@ namespace InterviewTest.App
             }
         }
 
-        private void _productStore_ProductAdded(IProduct obj)
+        private void ProductStore_ProductAdded(IProduct obj)
         {
             _products.Add(obj);
             RefreshProducts();
