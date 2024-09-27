@@ -7,6 +7,7 @@ namespace InterviewTest.App
 {
     public class ProductStore : IProductStore
     {
+        private readonly object _instanceLock = new();
         private readonly List<IProduct> _products = [];
 
         public IEnumerable<IProduct> GetProducts()
@@ -26,19 +27,25 @@ namespace InterviewTest.App
 
         public void AddProduct(IProduct product)
         {
-            Thread.Sleep(5000);//DO NOT REMOVE; TO SIMULATE A BUGGY/SLOW SERVICE
-            _products.Add(product);
-            ProductAdded?.Invoke(product);
+            lock (_instanceLock)
+            {
+                Thread.Sleep(5000);//DO NOT REMOVE; TO SIMULATE A BUGGY/SLOW SERVICE
+                _products.Add(product);
+                ProductAdded?.Invoke(product);
+            }
         }
 
         public void RemoveProduct(Guid productId)
         {
-            Thread.Sleep(5000);//DO NOT REMOVE; TO SIMULATE A BUGGY/SLOW SERVICE
-            IProduct product = _products.FirstOrDefault(p => p.Id.Equals(productId));
-            if (product != null)
+            lock (_instanceLock)
             {
-                _products.Remove(product);
-                ProductRemoved?.Invoke(productId);
+                Thread.Sleep(5000);//DO NOT REMOVE; TO SIMULATE A BUGGY/SLOW SERVICE
+                IProduct product = _products.FirstOrDefault(p => p.Id.Equals(productId));
+                if (product != null)
+                {
+                    _products.Remove(product);
+                    ProductRemoved?.Invoke(productId);
+                }
             }
         }
 
