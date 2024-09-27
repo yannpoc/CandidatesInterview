@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -14,7 +13,7 @@ namespace InterviewTest.App
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly List<IProduct> _products = new List<IProduct>();
+        private readonly List<IProduct> _products = [];
         private readonly IProductStore _productStore;
 
         public MainWindow()
@@ -24,22 +23,16 @@ namespace InterviewTest.App
             _products.AddRange(_productStore.GetProducts());
             RefreshProducts();
             _productStore.ProductAdded += ProductStore_ProductAdded;
-            _productStore.ProductRemoved += _productStore_ProductRemoved;
+            _productStore.ProductRemoved += ProductStore_ProductRemoved;
         }
 
-        private void Unitprice_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            var regex = new Regex(@"^\d+$");
-            e.Handled = !regex.IsMatch(e.Text);
-        }
-
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async void AddButton_Click(object sender, RoutedEventArgs e)
         {
             var name = _name.Text;
             int unitPrice;
             int quantity;
             IProduct p;
-            if (!String.IsNullOrEmpty(_type.Text) && int.TryParse(_unitprice.Text, out unitPrice) && int.TryParse(_quantity.Text, out quantity))
+            if (!string.IsNullOrEmpty(_type.Text) && int.TryParse(_unitprice.Text, out unitPrice) && int.TryParse(_quantity.Text, out quantity))
             {
                 if (_type.Text == "Vegetable")
                 {
@@ -49,6 +42,7 @@ namespace InterviewTest.App
                 {
                     p = new Fruit(name, quantity, unitPrice);
                 }
+
                 await Task.Run(() => _productStore.AddProduct(p));
             }
         }
@@ -65,13 +59,12 @@ namespace InterviewTest.App
             });
         }
 
-        private void _quantity_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void Integer_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex(@"^\d+$");
-            e.Handled = !regex.IsMatch(e.Text);
+            e.Handled = !int.TryParse(e.Text, out _);
         }
 
-        private void _productStore_ProductRemoved(Guid obj)
+        private void ProductStore_ProductRemoved(Guid obj)
         {
             IProduct possibleProduct = _products.FirstOrDefault(p => p.Id == obj);
             if (possibleProduct != null)
@@ -87,7 +80,7 @@ namespace InterviewTest.App
             RefreshProducts();
         }
 
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void CheckStoreAvailabilityButton_Click(object sender, RoutedEventArgs e)
         {
             var checkers = new List<ProductAvailabilityChecker>();
             var tasks = new List<Task>();
