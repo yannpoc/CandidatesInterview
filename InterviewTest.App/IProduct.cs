@@ -5,9 +5,9 @@ namespace InterviewTest.App
     public interface IProduct
     {
         Guid Id { get; }
-        string Name { get; set; }
-        int Count { get; set; }
-        int UnitPrice { get; set; }
+        string Name { get; }
+        int Count { get; }
+        int UnitPrice { get; }
         int TotalPrice { get; }
         HealthIndex HealthIndex { get; }
     }

@@ -1,28 +1,10 @@
-﻿using System;
-
-namespace InterviewTest.App
+﻿namespace InterviewTest.App
 {
-    public class Vegetable : IProduct
+    public class Vegetable : Product
     {
-        public Guid Id { get; }
-        public string Name { get; set; }
-        public int Count { get; set; }
-        public int UnitPrice { get; set; }
-
-        public int TotalPrice
-        {
-            get { return UnitPrice * Count; }
-        }
-
-        public HealthIndex HealthIndex { get; }
-
         public Vegetable(string name, int count, int unitPrice)
+            : base(name, count, unitPrice, HealthIndex.Good)
         {
-            Id = Guid.NewGuid();
-            HealthIndex = HealthIndex.Good;
-            Name = name;
-            Count = count;
-            UnitPrice = unitPrice;
         }
     }
 }
