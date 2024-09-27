@@ -1,0 +1,5 @@
+﻿TODO
+- Get rid of code behind.
+- Refactor according to WPF best practice.
+
+NICE TO HAVE
